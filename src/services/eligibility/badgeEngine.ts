@@ -40,8 +40,10 @@ export async function evaluateModuleEligibility(
 
   const results: ModuleEligibility[] = [];
 
-  for (const module of MODULE_NAMES) {
-    const moduleDeliverables = deliverables.filter((d) => d.module === module);
+  for (const moduleName of MODULE_NAMES) {
+    const moduleDeliverables = deliverables.filter(
+      (d) => d.module === moduleName
+    );
     const strongCount = moduleDeliverables.filter(
       (d) => d.qualitativeRating === 'strong'
     ).length;
@@ -52,7 +54,7 @@ export async function evaluateModuleEligibility(
       strongCount === DELIVERABLES_PER_MODULE;
 
     // Check for existing award record
-    const existingAward = existingAwards.find((a) => a.module === module);
+    const existingAward = existingAwards.find((a) => a.module === moduleName);
     let firstEarnedAt: Date | null = existingAward?.firstEarnedAt || null;
 
     // If badge is newly earned, create the award record
@@ -61,14 +63,14 @@ export async function evaluateModuleEligibility(
         projectName,
         founderEmail: deliverables[0]?.founderEmail || '',
         awardType: 'module_badge',
-        module,
+        module: moduleName,
         firstEarnedAt: new Date(),
       });
       firstEarnedAt = newAward.firstEarnedAt;
     }
 
     results.push({
-      module,
+      module: moduleName,
       deliverables: moduleDeliverables.map((d) => ({
         deliverableName: d.deliverableName,
         deliverableNumber: d.deliverableNumber,

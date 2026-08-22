@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 
     const contentType = format === 'png' ? 'image/png' : 'image/svg+xml';
 
-    return new NextResponse(certificateBuffer, {
+    return new NextResponse(new Uint8Array(certificateBuffer), {
       status: 200,
       headers: {
         'Content-Type': contentType,
